@@ -15,12 +15,16 @@ class TestRegistration:
     ENTER = (By.XPATH, '//*[@type="submit"]')
     ERROR_TEXT_ELEMENT = (By.XPATH, '//*[@class="page_content"]//div[5]')
     ERROR_TEXT = "Пожалуйста, проверьте свой пароль и имя аккаунта и попробуйте снова."
-    SITE_ELEMENT = (By.XPATH, '//*[contains(@class, "fullscreen-bg__video")]')
+    SITE_ELEMENT = (By.XPATH, '//*[contains(@class, "home_page_content special_offers")]')
 
     def test_base_registration(self, driver):
         driver.get(self.BASE_URL)
-        WebDriverWait(driver, self.TIME_OUT).until(
-            EC.visibility_of_element_located(self.SITE_ELEMENT))
+        first_element = True
+        try:
+            WebDriverWait(driver, self.TIME_OUT).until(EC.visibility_of_element_located(self.SITE_ELEMENT))
+        except TimeoutException:
+            first_element = False
+        assert first_element, "Элемент не отображается"
         enter_element = WebDriverWait(driver, self.TIME_OUT).until(
             EC.visibility_of_element_located(self.ENTRY_ELEMENT))
         enter_element.click()
@@ -36,3 +40,5 @@ class TestRegistration:
             EC.presence_of_element_located(self.ERROR_TEXT_ELEMENT))
         error_text = error_text_element.text
         assert self.ERROR_TEXT == error_text, f"Ожидалось: {self.ERROR_TEXT}\n"f"Получено: {error_text}"
+
+
