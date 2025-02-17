@@ -1,6 +1,3 @@
-import time
-
-import pytest
 from selenium.common import TimeoutException
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
@@ -15,9 +12,8 @@ class BasePage:
     ENTRY_ELEMENT = (By.XPATH, '//*[contains(@class, "global_action_link")]')
     SEARCH_ELEMENT = (By.ID, "store_nav_search_term")
     LANGUAGE_LIST = (By.ID, 'language_pulldown')
-    RUSSIAN_LANGUAGE = (By.XPATH, "//*[href='?l=english']")
     ENGLISH_LANGUAGE = (By.XPATH, "//*[contains(text(), 'English')]")
-    CHANGE_ELEMENT = (By.XPATH, '//*[contains(@class, "waiting_dialog_container waiting_dialog_centered")]')
+    CHANGE_LANGUAGE_ELEMENT = (By.XPATH, '//*[contains(@class, "waiting_dialog_container waiting_dialog_centered")]')
 
     def __init__(self, driver):
         self.driver = driver
@@ -31,8 +27,8 @@ class BasePage:
         language_list.click()
         change_language = WebDriverWait(driver, self.TIME_OUT).until(EC.element_to_be_clickable(self.ENGLISH_LANGUAGE))
         change_language.click()
-        WebDriverWait(driver, self.TIME_OUT).until(EC.visibility_of_element_located(self.CHANGE_ELEMENT))
-        WebDriverWait(driver, self.TIME_OUT).until_not(EC.visibility_of_element_located(self.CHANGE_ELEMENT))
+        WebDriverWait(driver, self.TIME_OUT).until(EC.visibility_of_element_located(self.CHANGE_LANGUAGE_ELEMENT))
+        WebDriverWait(driver, self.TIME_OUT).until_not(EC.visibility_of_element_located(self.CHANGE_LANGUAGE_ELEMENT))
         self.base_opened()
 
     def base_opened(self):

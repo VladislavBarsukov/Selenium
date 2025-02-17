@@ -14,7 +14,6 @@ class TestAuthorization:
     ERROR_TEXT_ELEMENT = (By.XPATH, '//*[@class="page_content"]//div[5]')
     ERROR_TEXT = "Пожалуйста, проверьте свой пароль и имя аккаунта и попробуйте снова."
 
-
     def test_negative_authorization(self, driver):
         BasePage(driver).login_page()
         login = WebDriverWait(driver, self.TIME_OUT).until(EC.visibility_of_element_located(self.LOGIN))
@@ -29,5 +28,3 @@ class TestAuthorization:
             EC.presence_of_element_located(self.ERROR_TEXT_ELEMENT))
         error_text = error_text_element.text
         assert self.ERROR_TEXT == error_text, f"Ожидалось: {self.ERROR_TEXT}\n"f"Получено: {error_text}"
-
-
