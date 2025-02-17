@@ -1,33 +1,22 @@
-from selenium.common import TimeoutException
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.by import By
 from faker import Faker
+from base_page import BasePage
 
 
-class TestRegistration:
+class TestAuthorization:
     fake = Faker()
-    BASE_URL = 'https://store.steampowered.com/'
     TIME_OUT = 15
-    ENTRY_ELEMENT = (By.XPATH, '//*[contains(@class, "global_action_link")]')
     LOGIN = (By.XPATH, '//*[@type="text"]')
     PASSWORD = (By.XPATH, '//*[@type="password"]')
     ENTER = (By.XPATH, '//*[@type="submit"]')
     ERROR_TEXT_ELEMENT = (By.XPATH, '//*[@class="page_content"]//div[5]')
     ERROR_TEXT = "Пожалуйста, проверьте свой пароль и имя аккаунта и попробуйте снова."
-    SITE_ELEMENT = (By.XPATH, '//*[contains(@class, "home_page_content special_offers")]')
 
-    def test_base_registration(self, driver):
-        driver.get(self.BASE_URL)
-        first_element = True
-        try:
-            WebDriverWait(driver, self.TIME_OUT).until(EC.visibility_of_element_located(self.SITE_ELEMENT))
-        except TimeoutException:
-            first_element = False
-        assert first_element, "Элемент не отображается"
-        enter_element = WebDriverWait(driver, self.TIME_OUT).until(
-            EC.visibility_of_element_located(self.ENTRY_ELEMENT))
-        enter_element.click()
+
+    def test_negative_authorization(self, driver):
+        BasePage(driver).login_page()
         login = WebDriverWait(driver, self.TIME_OUT).until(EC.visibility_of_element_located(self.LOGIN))
         login.send_keys(self.fake.user_name())
         password = WebDriverWait(driver, self.TIME_OUT).until(EC.visibility_of_element_located(self.PASSWORD))
