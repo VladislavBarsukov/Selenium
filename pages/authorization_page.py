@@ -8,7 +8,7 @@ from WebDriver import WebDriver
 
 class Authorization:
     fake = Faker()
-    a = ConfigReader(config_file_path="config.json")
+    a = ConfigReader()
     TIME_OUT = a.get_value("time", "TIME_OUT")
     LOGIN = (By.XPATH, '//*[@type="text"]')
     PASSWORD = (By.XPATH, '//*[@type="password"]')
@@ -18,13 +18,15 @@ class Authorization:
     def __init__(self):
         self.driver = WebDriver().get_driver()
 
-    def negative_authorization(self):
+    def check_negative_authorization(self):
         login = WebDriverWait(self.driver, self.TIME_OUT).until(EC.visibility_of_element_located(self.LOGIN))
         login.send_keys(self.fake.user_name())
         password = WebDriverWait(self.driver, self.TIME_OUT).until(EC.visibility_of_element_located(self.PASSWORD))
         password.send_keys(self.fake.password())
         enter = WebDriverWait(self.driver, self.TIME_OUT).until(EC.element_to_be_clickable(self.ENTER))
         enter.click()
+
+    def get_error_text(self):
         WebDriverWait(self.driver, self.TIME_OUT).until(lambda driver: WebDriverWait(self.driver, self.TIME_OUT).until(
             EC.presence_of_element_located(self.ERROR_TEXT_ELEMENT)).text.strip() != "")
         error_text_element = WebDriverWait(self.driver, self.TIME_OUT).until(

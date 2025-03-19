@@ -12,12 +12,12 @@ class Language(Enum):
 
 @pytest.fixture(scope='function')
 def driver():
-    BASE_URL = ConfigReader(config_file_path="config.json").get_value("url", "BASE_URL")
+    BASE_URL = ConfigReader().get_value("url", "BASE_URL")
     options = Options()
     options.add_experimental_option('prefs', {
         'intl.accept_languages': Language.RUSSIAN.value
     })
-    driver_instance = WebDriver(options=options).get_driver()
-    driver_instance.get(BASE_URL)
+    driver_instance = WebDriver(options=options)
+    driver_instance.get_driver().get(BASE_URL)
     yield driver_instance
-    WebDriver().cleanup()
+    WebDriver().quit()

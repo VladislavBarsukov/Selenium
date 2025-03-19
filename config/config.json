@@ -1,6 +1,6 @@
 {
   "time": {
-    "TIME_OUT": "15"
+    "TIME_OUT": "10"
   },
   "url": {
     "BASE_URL": "https://store.steampowered.com/"

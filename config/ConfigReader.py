@@ -3,19 +3,15 @@ import os
 
 
 class ConfigReader:
-    def __init__(self, config_file_path):
-        current_dir = os.path.dirname(os.path.abspath(__file__))
-        self.config_file_path = os.path.join(current_dir, config_file_path)
+    CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
+
+    def __init__(self):
+        self.config_file_path = os.path.join(self.CURRENT_DIR, "config.json")
         self.config_data = self._read_config()
 
     def _read_config(self):
-        try:
-            with open(self.config_file_path, 'r') as file:
-                return json.load(file)
-        except FileNotFoundError:
-            raise FileNotFoundError(f"Конфигурационный файл не найден: {self.config_file_path}")
-        except json.JSONDecodeError:
-            raise ValueError(f"Некорректный формат JSON в файле: {self.config_file_path}")
+        with open(self.config_file_path, 'r') as file:
+            return json.load(file)
 
     def get_config(self, section: str = None):
         if section:

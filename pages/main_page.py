@@ -8,7 +8,7 @@ from WebDriver import WebDriver
 
 
 class MainPage:
-    TIME_OUT = ConfigReader(config_file_path="config.json").get_value("time", "TIME_OUT")
+    TIME_OUT = ConfigReader().get_value("time", "TIME_OUT")
     FIRST_OPEN_SITE_ELEMENT = (
         By.XPATH, '//*[contains(@class, "store_nav")]')
     ENTRY_ELEMENT = (By.XPATH, '//*[contains(@class, "global_action_link")]')
@@ -33,7 +33,7 @@ class MainPage:
             is_opened = False
         return is_opened
 
-    def login_page(self):
+    def go_to_login_page(self):
         enter_element = WebDriverWait(self.driver, self.TIME_OUT).until(
             EC.element_to_be_clickable(self.ENTRY_ELEMENT))
         enter_element.click()
