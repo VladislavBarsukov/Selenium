@@ -3,10 +3,10 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.by import By
 from faker import Faker
 from config.ConfigReader import ConfigReader
-from WebDriver import WebDriver
+from pages.base_page import BasePage
 
 
-class Authorization:
+class Authorization(BasePage):
     fake = Faker()
     a = ConfigReader()
     TIME_OUT = a.get_value("time", "TIME_OUT")
@@ -16,7 +16,7 @@ class Authorization:
     ERROR_TEXT_ELEMENT = (By.XPATH, '//*[@class="page_content"]//div[5]')
 
     def __init__(self):
-        self.driver = WebDriver().get_driver()
+        super().__init__()
 
     def check_negative_authorization(self):
         login = WebDriverWait(self.driver, self.TIME_OUT).until(EC.visibility_of_element_located(self.LOGIN))

@@ -2,12 +2,12 @@ import time
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.by import By
-from WebDriver import WebDriver
 import re
 from config.ConfigReader import ConfigReader
+from pages.base_page import BasePage
 
 
-class SearchingGamesPage:
+class SearchingGamesPage(BasePage):
     LOADING_OF_GAMES = (By.XPATH, '//*[contains(@style, "opacity: 0.5;") and contains(@id, "search_result_container")]')
     TIME_OUT = ConfigReader().get_value("time", "TIME_OUT")
     SEARCH_ELEMENT = (By.ID, "store_nav_search_term")
@@ -19,13 +19,13 @@ class SearchingGamesPage:
                   '//*[contains(@class, "discount_final_price")]')
 
     def __init__(self):
-        self.driver = WebDriver().get_driver()
+        super().__init__()
 
     @staticmethod
-    def get_prices(games):
+    def __get_prices(games):
         return [float(re.sub(r'[^\d,]', '', price).replace(',', '.')) for price in games]
 
-    def sort_games_from_high_to_low_price(self, count):
+    def sort_games_from_high_to_low_price(self):
         searching_type_button = WebDriverWait(self.driver, self.TIME_OUT).until(
             EC.element_to_be_clickable(self.SEARCHING_TYPE))
         searching_type_button.click()
@@ -35,7 +35,9 @@ class SearchingGamesPage:
         wait = WebDriverWait(self.driver, self.TIME_OUT, poll_frequency=0.05)
         wait.until(EC.presence_of_element_located(self.LOADING_OF_GAMES))
         wait.until(EC.invisibility_of_element_located(self.LOADING_OF_GAMES))
+
+    def parsing_prices(self, count):
         game_price = WebDriverWait(self.driver, self.TIME_OUT).until(
             EC.presence_of_all_elements_located(self.GAME_PRICE))[:count]
-        game_price = self.get_prices([i.text for i in game_price])
+        game_price = self.__get_prices([i.text for i in game_price])
         return game_price

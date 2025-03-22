@@ -4,10 +4,11 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.by import By
 from faker import Faker
 from config.ConfigReader import ConfigReader
-from WebDriver import WebDriver
+from pages.base_page import BasePage
 
 
-class MainPage:
+
+class MainPage(BasePage):
     TIME_OUT = ConfigReader().get_value("time", "TIME_OUT")
     FIRST_OPEN_SITE_ELEMENT = (
         By.XPATH, '//*[contains(@class, "store_nav")]')
@@ -18,11 +19,11 @@ class MainPage:
     RUSSIAN_LANGUAGE = (By.XPATH, "//*[contains(text(), 'Russian')]")
     CHANGE_LANGUAGE_ELEMENT = (
         By.XPATH, '//*[contains(@class, "waiting_dialog_container") and contains(@class, "waiting_dialog_centered")]')
-    BUTTON_SEARCH = (By.XPATH, '//*[@id="store_search_link"]/img')
+    BUTTON_SEARCH = (By.XPATH, '//*[@id="store_search_link"]//img')
     fake = Faker()
 
     def __init__(self):
-        self.driver = WebDriver().get_driver()
+        super().__init__()
 
     def is_opened(self):
         is_opened = True

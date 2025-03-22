@@ -1,7 +1,7 @@
 from selenium import webdriver
 
 
-class WebDriver:
+class CustomWebDriver:
     _driver = None
 
     def __new__(cls, options=None):
